@@ -25,9 +25,10 @@ var currentHumidity = $("#humidity");
 var currentWind = $("#windSpeed");
 var currentUV = $("#UV-index");
 
-var historyContainer = $("history");
+var historyContainer = $("#history");
 var prevSearches = JSON.parse(localStorage.getItem("searchStorage")) || [];
 console.log(prevSearches);
+renderHistory();
 
 //I need to start utilizing const and let more often 
 const apiKey = "db061fe7d0871f44935a08bd4577cbba";
@@ -39,7 +40,7 @@ function getWeather(city) {
         url: queryURL,
         method: "GET"
     }).then(function (response) {
-        console.log(response);
+        //console.log(response);
         //Adds city name and weather image into corresponding Div
         cityName.html("<h3>" + response.name + " - " + currentDate + "</h3>");
         var weatherPic = "http://openweathermap.org/img/wn/" + response.weather[0].icon + "@2x.png";
@@ -55,13 +56,32 @@ function getWeather(city) {
         var UVQueryURL = "http://api.openweathermap.org/data/2.5/uvi?appid=" + apiKey + "&lat=" + lat + "&lon=" + lon;
         $.ajax({
             url: UVQueryURL,
-            methord: "GET"
-        }) .then(function (response){
+            method: "GET"
+        }).then(function (response) {
+            //console.log(response);
             currentUV.html("UV Index = " + response.value);
         })
         //5 Day forecast
         var forecastQueryURL = "https://api.openweathermap.org/data/2.5/forecast?q=" + city + "&appid=" + apiKey;
-        console.log(forecastQueryURL);
+        $.ajax({
+            url: forecastQueryURL,
+            method: "GET"
+        }).then(function (response) {
+            //console.log(response);
+            var dayNum = 1;
+            for (let i = 0; response.list.length; i++) {
+                if (response.list[i].dt_txt.split(" ")[1] == "15:00:00") {
+                    let day = response.list[i].dt_txt.split("-")[2].split(" ")[0];
+                    let month = response.list[i].dt_txt.split("-")[1];
+                    $("#day" + dayNum).text(month + "/" + day);
+                    var temp = KtoF(response.list[i].main.temp);
+                    $("#day" + dayNum + "-temp").html("Temp: " + temp + "&#176F");
+                    $("#day" + dayNum + "-humidity").text("Humidity: " + response.list[i].main.humidity);
+                    $("#day" + dayNum + "-icon").attr("src", "http://openweathermap.org/img/w/" + response.list[i].weather[0].icon + ".png");
+                    dayNum++;
+                }
+            }
+        })
 
 
     })
@@ -72,7 +92,7 @@ function KtoF(K) {
 }
 
 //Click event for the search button
-search.on("click", function (){
+search.on("click", function () {
     //var userinput = cityInput.value;    --- Does not work ************
     var userInput = document.getElementById("cityInput").value;
     getWeather(userInput);
@@ -83,17 +103,25 @@ search.on("click", function (){
 
 //Generating History Container
 function renderHistory() {
-    
-    for (let i=0; i < prevSearches.length; i++) {
+    historyContainer.empty();
+
+    for (let i = 0; i < prevSearches.length; i++) {
         var historyInput = $("<input>");
         historyInput.attr("type", "text");
         historyInput.attr("readonly", true);
-        historyInput.attr("class", "form-control d-block text-white");
+        historyInput.attr("class", "form-control-lg text-black");
         historyInput.attr("value", prevSearches[i]);
-        historyInput.on("click", function(){
-            getWeather(historyInput.value);
+        historyInput.on("click", function () {
+            getWeather($(this).attr("value"));
         })
         historyContainer.append(historyInput);
     }
 
 }
+
+//Button to clear array 
+clear.on("click", function(){
+  prevSearches = []; 
+  removeItem(searchStorage);
+  renderHistory(); 
+})
