@@ -1,5 +1,3 @@
-$(document).ready(function () { });
-
 //Testing moment.js - Copy Pasta from Day planner 
 console.log("Current Date", moment().format("MMMM Do YYYY"));
 console.log("Current Time", moment().format('HH:mm:ss'));
@@ -67,12 +65,15 @@ function getWeather(city) {
                 currentUV.attr("class", "badge badge-danger");
             }
             if (response.value >= 6 && response.value < 8) {
-                currentUV.attr("class", "badge badge-warning")
+                currentUV.attr("class", "badge badge-warning");
             }
             if (response.value < 6) {
-                currentUV.attr("class", "badge badge-success")
+                currentUV.attr("class", "badge badge-success");
             }
-            
+            if (response.value < 3) {
+                currentUV.attr("class", "badge badge-info");
+            }
+
         })
         //5 Day forecast
         var forecastQueryURL = "https://api.openweathermap.org/data/2.5/forecast?q=" + city + "&appid=" + apiKey;
@@ -95,8 +96,6 @@ function getWeather(city) {
                 }
             }
         })
-
-
     })
 }
 // Function to convert Kelvin to Farenheit
@@ -111,7 +110,7 @@ search.on("click", function () {
     prevSearches.push(userInput);
     localStorage.setItem("searchStorage", JSON.stringify(prevSearches));
     renderHistory();
-    cityInput.val(""); 
+    cityInput.val("");
     //inputGroup.reset();
 
 })
@@ -135,9 +134,9 @@ function renderHistory() {
 }
 
 //Button to clear array 
-clear.on("click", function(){
-  localStorage.removeItem("searchStorage");
-  prevSearches.length = 0;
-  //historyContainer.reset();
-  renderHistory(); 
+clear.on("click", function () {
+    localStorage.removeItem("searchStorage");
+    prevSearches.length = 0;
+    //historyContainer.reset();
+    renderHistory();
 })
