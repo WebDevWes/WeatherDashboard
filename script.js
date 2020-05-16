@@ -62,6 +62,17 @@ function getWeather(city) {
         }).then(function (response) {
             //console.log(response);
             currentUV.html("UV Index = " + response.value);
+            //Changing color of badge depending on UV Index value
+            if (response.value >= 8) {
+                currentUV.attr("class", "badge badge-danger");
+            }
+            if (response.value >= 6 && response.value < 8) {
+                currentUV.attr("class", "badge badge-warning")
+            }
+            if (response.value < 6) {
+                currentUV.attr("class", "badge badge-success")
+            }
+            
         })
         //5 Day forecast
         var forecastQueryURL = "https://api.openweathermap.org/data/2.5/forecast?q=" + city + "&appid=" + apiKey;
@@ -95,7 +106,7 @@ function KtoF(K) {
 
 //Click event for the search button
 search.on("click", function () {
-    var userInput = cityInput.val();
+    var userInput = cityInput.val().trim();
     getWeather(userInput);
     prevSearches.push(userInput);
     localStorage.setItem("searchStorage", JSON.stringify(prevSearches));
