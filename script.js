@@ -46,6 +46,13 @@ function showPosition(position) {
     //console.log("Your coordinates are Latitude: " + lat + " Longitude " + lon);
     var locationQueryURL = "https://api.openweathermap.org/data/2.5/weather?lat=" + lat + "&lon=" + lon + "&appid=" + apiKey;
     //console.log(locationQueryURL)
+    $.ajax({
+        url: locationQueryURL,
+        method: "GET"
+    }).then(function (response){
+        //console.log(response);
+        getWeather(response.name);
+    })
 }
 
 //I need to start utilizing const and let more often 
