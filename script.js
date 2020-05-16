@@ -29,6 +29,24 @@ var prevSearches = JSON.parse(localStorage.getItem("searchStorage")) || [];
 //console.log(prevSearches);
 //Call renderHistory function here to bring out prevSearches
 renderHistory();
+getLocation();
+
+//Attempting to add getCurrentPosition() --- COPY PASTA FROM WEEK 3 ASSIGNMENT - locationredirect
+function getLocation() {
+    if (navigator.geolocation) {
+        // Provide our showPosition() function to getCurrentPosition
+        navigator.geolocation.getCurrentPosition(showPosition);
+    }
+}
+// This will get called after getCurrentPosition()
+function showPosition(position) {
+    // Grab coordinates from the given object
+    var lat = position.coords.latitude;
+    var lon = position.coords.longitude;
+    //console.log("Your coordinates are Latitude: " + lat + " Longitude " + lon);
+    var locationQueryURL = "https://api.openweathermap.org/data/2.5/weather?lat=" + lat + "&lon=" + lon + "&appid=" + apiKey;
+    //console.log(locationQueryURL)
+}
 
 //I need to start utilizing const and let more often 
 const apiKey = "db061fe7d0871f44935a08bd4577cbba";
@@ -75,7 +93,7 @@ function getWeather(city) {
             }
 
         })
-        //5 Day forecast
+        //5 Day forecast --- This is giving me a ton of warnings on the console about (dt_txt)
         var forecastQueryURL = "https://api.openweathermap.org/data/2.5/forecast?q=" + city + "&appid=" + apiKey;
         $.ajax({
             url: forecastQueryURL,
