@@ -16,6 +16,7 @@ var currentYear = moment().format("YYYY");
 var cityInput = $("#cityInput");
 var search = $("#searchButton");
 var clear = $("#clearHistory");
+var inputGroup = $("#input-group");
 
 var cityName = $("#cityName");
 var currentImg = $("#currentWeatherImg");
@@ -27,7 +28,8 @@ var currentUV = $("#UV-index");
 
 var historyContainer = $("#history");
 var prevSearches = JSON.parse(localStorage.getItem("searchStorage")) || [];
-console.log(prevSearches);
+//console.log(prevSearches);
+//Call renderHistory function here to bring out prevSearches
 renderHistory();
 
 //I need to start utilizing const and let more often 
@@ -93,12 +95,14 @@ function KtoF(K) {
 
 //Click event for the search button
 search.on("click", function () {
-    //var userinput = cityInput.value;    --- Does not work ************
-    var userInput = document.getElementById("cityInput").value;
+    var userInput = cityInput.val();
     getWeather(userInput);
     prevSearches.push(userInput);
     localStorage.setItem("searchStorage", JSON.stringify(prevSearches));
     renderHistory();
+    cityInput.val(""); 
+    //inputGroup.reset();
+
 })
 
 //Generating History Container
@@ -121,7 +125,8 @@ function renderHistory() {
 
 //Button to clear array 
 clear.on("click", function(){
-  prevSearches = []; 
-  removeItem(searchStorage);
+  localStorage.removeItem("searchStorage");
+  prevSearches.length = 0;
+  //historyContainer.reset();
   renderHistory(); 
 })
