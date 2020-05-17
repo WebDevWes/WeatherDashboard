@@ -66,6 +66,10 @@ function getWeather(city) {
         method: "GET"
     }).then(function (response) {
         //console.log(response);
+        //If input is not a valid city, returns error message from given object
+        // if (response.status === 404) {
+        //     alert(response.message);
+        // }
         //Adds city name and weather image into corresponding Div
         cityName.html("<h3>" + response.name + " - " + currentDate + "</h3>");
         var weatherPic = "http://openweathermap.org/img/wn/" + response.weather[0].icon + "@2x.png";
