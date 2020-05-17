@@ -49,7 +49,7 @@ function showPosition(position) {
     $.ajax({
         url: locationQueryURL,
         method: "GET"
-    }).then(function (response){
+    }).then(function (response) {
         //console.log(response);
         getWeather(response.name);
     })
@@ -131,13 +131,16 @@ function KtoF(K) {
 //Click event for the search button
 search.on("click", function () {
     var userInput = cityInput.val().trim();
-    getWeather(userInput);
-    prevSearches.push(userInput);
-    localStorage.setItem("searchStorage", JSON.stringify(prevSearches));
-    renderHistory();
-    cityInput.val("");
-    //inputGroup.reset();
-
+    if (userInput !== "") {
+        getWeather(userInput);
+        prevSearches.push(userInput);
+        localStorage.setItem("searchStorage", JSON.stringify(prevSearches));
+        renderHistory();
+        cityInput.val("");
+        //inputGroup.reset();
+    } else if (userInput == "") {
+        alert("Please enter a city!");
+    }
 })
 
 //Generating History Container
