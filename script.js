@@ -61,15 +61,19 @@ const apiKey = "db061fe7d0871f44935a08bd4577cbba";
 //Ajax call to OpenWeatherMap (Current day weather)
 function getWeather(city) {
     var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + apiKey;
+    //console.log("query: ", queryURL)
     $.ajax({
         url: queryURL,
         method: "GET"
     }).then(function (response) {
-        //console.log(response);
-        //If input is not a valid city, returns error message from given object
-        // if (response.status === 404) {
-        //     alert(response.message);
-        // }
+  
+        //Checking to see if city is already within the array
+        if (prevSearches.indexOf(city) === -1) {
+            prevSearches.push(city);
+            localStorage.setItem("searchStorage", JSON.stringify(prevSearches));
+            renderHistory();
+        }
+        
         //Adds city name and weather image into corresponding Div
         cityName.html("<h3>" + response.name + " - " + currentDate + "</h3>");
         var weatherPic = "http://openweathermap.org/img/wn/" + response.weather[0].icon + "@2x.png";
@@ -125,7 +129,8 @@ function getWeather(city) {
                 }
             }
         })
-    })
+        // Tutor added, catch response and alerts if there is an error
+    }).catch(err => alert("City not found!"))
 }
 // Function to convert Kelvin to Farenheit
 function KtoF(K) {
@@ -137,9 +142,10 @@ search.on("click", function () {
     var userInput = cityInput.val().trim();
     if (userInput !== "") {
         getWeather(userInput);
-        prevSearches.push(userInput);
-        localStorage.setItem("searchStorage", JSON.stringify(prevSearches));
-        renderHistory();
+        // Next 3 lines were moved into the ajax call in order to prevent pushing repeat cities
+        // prevSearches.push(userInput);
+        // localStorage.setItem("searchStorage", JSON.stringify(prevSearches));
+        // renderHistory();
         cityInput.val("");
         //inputGroup.reset();
     } else if (userInput == "") {
