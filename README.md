@@ -9,6 +9,6 @@ Utilizes OpenWeather API
 Utilizes Bootstrap to build layout
 
 
-[Screenshot of Password Generator](/assets/WeatherDash.png)
+![Screenshot of Password Generator](/assets/WeatherDash.png)
 
 Github pages link : https://wesaboo.github.io/WeatherDashboard/
