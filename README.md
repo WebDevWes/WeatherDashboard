@@ -1,3 +1,5 @@
+### Github pages link : https://wesaboo.github.io/WeatherDashboard/
+
 # WeatherDashborad
 
 Weather Dashboard made to demonstrate understanding of APIs
@@ -11,4 +13,12 @@ Utilizes Bootstrap to build layout
 
 ![Screenshot of Password Generator](/assets/WeatherDash.png)
 
-Github pages link : https://wesaboo.github.io/WeatherDashboard/
+### Technologies Used
+
+- HTML
+- CSS
+- Bootstrap
+- Javascript
+- jQuery
+- Moment.JS
+- OpenWeatherMap API
