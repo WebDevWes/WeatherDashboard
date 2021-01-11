@@ -1,4 +1,8 @@
-### Github pages link : https://wesaboo.github.io/WeatherDashboard/
+### Github pages link : https://webdevwes.github.io/WeatherDashboard/
+
+### Github Username: WebDevWes
+
+Github Email Address: webdevwes89@gmail.com
 
 # WeatherDashborad
 
